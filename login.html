@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Login Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="sty.css">
 
 </head>
@@ -18,14 +19,15 @@
                 <button type="button" class="toggle" onclick="register()">Register</button>
             </div>
             <div class="social">
-                <img src="https://companieslogo.com/img/orig/GOOG-0ed88f7c.png?t=1633218227">
-                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/04/Facebook_f_logo_%282021%29.svg/640px-Facebook_f_logo_%282021%29.svg.png">
-                <img src="https://www.freepnglogos.com/uploads/twitter-logo-png/twitter-logo-vector-png-clipart-1.png">
+                <a href="#" class="fab fa-facebook-f"></a>
+                <a href="#" class="fab fa-twitter"></a>
+                <a href="#" class="fab fa-instagram"></a>
+                <a href="#" class="fab fa-linkedin"></a>
     
             </div>
             <form id="login" class="input-group">
-                    <input type="text" class="input-field" placeholder="User Id" required>
-                    <input type="text" class="input-field" placeholder="Enter Password" required>
+                    <input type="email" class="input-field" placeholder="User Id" required>
+                    <input type="password" class="input-field" placeholder="Enter Password" required>
                     <input type="checkbox" class="check"><span>Remember Password</span>
                     <button type="submit" class="submit-btn">Log in</button>
 
@@ -33,7 +35,7 @@
             <form id="register" class="input-group">
                 <input type="text" class="input-field" placeholder="User Id" required>
                 <input type="email" class="input-field" placeholder="Email Id" required>
-                <input type="text" class="input-field" placeholder="Enter Password" required>
+                <input type="password" class="input-field" placeholder="Enter Password" required>
                 <input type="checkbox" class="check"><span>I agree to terms & conditions</span>
                 <button type="submit" class="submit-btn">Register</button>
 
