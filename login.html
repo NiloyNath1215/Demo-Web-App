@@ -1,3 +1,59 @@
+<?php
+
+@include 'config.php';
+
+session_start();
+
+if(isset($_POST['submit'])){
+
+   $name = mysqli_real_escape_string($conn, $_POST['name']);
+   $email = mysqli_real_escape_string($conn, $_POST['email']);
+   $pass = md5($_POST['password']);
+   $cpass = md5($_POST['cpassword']);
+   $user_type = $_POST['user_type'];
+
+   $select = " SELECT * FROM user_form WHERE email = '$email' && password = '$pass' ";
+
+   $result = mysqli_query($conn, $select);
+
+   if(mysqli_num_rows($result) > 0){
+
+    $row = mysqli_fetch_array($result);
+
+    if($row['user_type'] == 'admin'){
+
+       $_SESSION['admin_name'] = $row['name'];
+       header('location:admin_page.php');
+
+    }
+    elseif($row['user_type'] == 'user'){
+
+         $_SESSION['user_name'] = $row['name'];
+         header('location:user_page.php');
+
+      }
+     
+   }else{
+      $error[] = 'incorrect email or password!';
+   }
+   if(mysqli_num_rows($result) > 0){
+
+    $error[] = 'user already exist!';
+
+ }
+ else{
+
+    if($pass != $cpass){
+       $error[] = 'password not matched!';
+    }else{
+       $insert = "INSERT INTO user_form(name, email, password, user_type) VALUES('$name','$email','$pass','$user_type')";
+       mysqli_query($conn, $insert);
+       header('location:login_form.php');
+    }
+ }
+};
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,28 +77,46 @@
             <div class="social">
                 <a href="#" class="fab fa-facebook-f"></a>
                 <a href="#" class="fab fa-twitter"></a>
-                <a href="#" class="fab fa-instagram"></a>
                 <a href="#" class="fab fa-linkedin"></a>
-    
             </div>
-            <form id="login" class="input-group">
-                    <input type="email" class="input-field" placeholder="User Id" required>
-                    <input type="password" class="input-field" placeholder="Enter Password" required>
-                    <input type="checkbox" class="check"><span>Remember Password</span>
-                    <button type="submit" class="submit-btn">Log in</button>
 
+            <form id="login" class="input-group" action="" method="post">
+                <?php
+                if(isset($error)){
+                    foreach($error as $error){
+                        echo '<span class="error-msg">'.$error.'</span>';
+                    };
+                };
+                ?>
+                <input type="email" name="email" class="input-field"placeholder="Email" required>
+                <input type="password" name="password"class="input-field" placeholder="Enter Password"required>
+                <input type="checkbox" class="check"><span>RememberPassword</span>
+                <button type="submit" name="submit"class="submit-btn">Log in</button>
             </form>
-            <form id="register" class="input-group">
-                <input type="text" class="input-field" placeholder="User Id" required>
-                <input type="email" class="input-field" placeholder="Email Id" required>
-                <input type="password" class="input-field" placeholder="Enter Password" required>
-                <input type="checkbox" class="check"><span>I agree to terms & conditions</span>
-                <button type="submit" class="submit-btn">Register</button>
 
-        </form>
-    </div>
+            <form id="register" class="input-group" action="" method="post">
+                <?php
+                if(isset($error)){
+                    foreach($error as $error){
+                        echo '<span class="error-msg">'.$error.'</span>';
+                    };
+                };
+                ?>
+                <input type="text" name="name" class="input-field" placeholder="Name" required>
+                <input type="email" name="email" class="input-field" placeholder="Email Id" required>
+                <input type="password" class="input-field" placeholder="Enter Password" required>
+                <input type="password" name="cpassword" class="input-field" placeholder="Confirm your Password" required>
+                <select name="user_type">
+                    <option value="user">user</option>
+                    <option value="admin">admin</option>
+                </select>
+                <input type="checkbox" class="check"><span>I agree to terms & conditions</span>
+                <button type="submit" name="submit" class="submit-btn">Register</button>
+            </form>
+
+        </div>
        
-            </div>
+    </div>
     <script>
         var x=document.getElementById("login");
         var y=document.getElementById("register");
